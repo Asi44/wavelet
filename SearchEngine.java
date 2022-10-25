@@ -3,32 +3,33 @@ import java.net.URI;
 import java.util.ArrayList;
 
 class Handler implements URLHandler  {
+    ArrayList<String> strs = new ArrayList<String>();
 
     public String handleRequest(URI url) {
 
-        ArrayList<String> strs = new ArrayList<String>();
         if (url.getPath().contains("/add")) {
             String[] parameters = url.getQuery().split("=");
             if (parameters[0].equals("s")) {
                 strs.add(parameters[1]);
-                return (parameters[1] + " added to list");
+                return ("current list: " + strs);
             }
+
         }
-        else if (url.getPath().contains("/search")){
+
+        if (url.getPath().contains("/search")) {
+
             String[] parameters = url.getQuery().split("=");
-            String foundStrs = "";
+            ArrayList<String> foundStrs = new ArrayList<>();
+            String currStr;
+
             if (parameters[0].equals("s")) {
-                for (int i =0; i <strs.size(); i++) {
-                    if (strs.get(i).contains(parameters[1])){
-                        foundStrs = foundStrs + strs.get(i) + " ";
+                for (int i = 0; i < strs.size(); i++) {
+                    currStr = strs.get(i);
+                    if (currStr.contains(parameters[1])) {
+                        foundStrs.add(currStr);
                     }
                 }
-                if (foundStrs.equals("")) {
-                    return ("String not found");
-                }
-                else {
-                    return foundStrs;
-                }
+                return ("found strings: " + foundStrs);
             }
         }
 
